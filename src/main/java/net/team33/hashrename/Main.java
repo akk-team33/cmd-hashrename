@@ -49,6 +49,8 @@ public final class Main {
     private static void renameRegularFile(final Path path) {
         final String oldName = path.getFileName().toString();
         if (isHashName(oldName)) {
+            LOGGER.log(INFO, String.format("Nothing to do: <%s>", path));
+        } else {
             final int extStart = oldName.lastIndexOf('.');
             final String extension = (0 > extStart) ? "" : oldName.substring(extStart);
             try {
@@ -58,8 +60,6 @@ public final class Main {
             } catch (IOException e) {
                 LOGGER.log(WARNING, String.format("Could not access or rename <%s>", path), e);
             }
-        } else {
-            LOGGER.log(INFO, String.format("Nothing to do: <%s>", path));
         }
     }
 
