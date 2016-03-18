@@ -1,0 +1,5 @@
+#Mon Dec 14 13:02:57 CET 2015
+path=trial
+recursive=false
+format.I=04
+format=%I.{%H}.%X
