@@ -1,18 +1,22 @@
 package net.team33.hashrename;
 
+import net.team33.numcodec.PlainCodec;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static net.team33.hashrename.Package.DIGITS;
+
 public class Hash {
 
-    private static final int BUFFER_SIZE = 16;
-    private static final int RADIX = 36;
+    private static final int BUFFER_SIZE = 15;
+    private static final PlainCodec CODEC = PlainCodec.using(DIGITS);
 
     public static String from(final Path path) throws IOException {
-        return value(path).toString(RADIX);
+        return CODEC.encode(value(path));
     }
 
     private static BigInteger value(final Path path) throws IOException {

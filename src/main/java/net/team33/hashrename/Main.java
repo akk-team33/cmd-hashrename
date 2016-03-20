@@ -8,11 +8,13 @@ import java.util.logging.Logger;
 
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
+import static net.team33.hashrename.Package.DIGITS;
 
 @SuppressWarnings("UseOfSystemOutOrSystemErr")
 public final class Main {
 
-    private static final int BUFFER_SIZE = 16;
+    public static final String START_HASH = "[#";
+    public static final String ENDOF_HASH = "]";
     private static final Logger LOGGER = Logger.getLogger(Main.class.getCanonicalName());
 
     private Main() {
@@ -54,8 +56,8 @@ public final class Main {
             final int extStart = oldName.lastIndexOf('.');
             final String extension = (0 > extStart) ? "" : oldName.substring(extStart);
             try {
-                final String newName = String.format("(#%s)%s", Hash.from(path), extension);
-                //Files.move(path, path.getParent().resolve(newName));
+                final String newName = String.format("%s%s%s%s", START_HASH, Hash.from(path), ENDOF_HASH, extension);
+                Files.move(path, path.getParent().resolve(newName));
                 LOGGER.log(INFO, String.format("Moved <%s> to <%s>", path, newName));
             } catch (IOException e) {
                 LOGGER.log(WARNING, String.format("Could not access or rename <%s>", path), e);
@@ -64,13 +66,13 @@ public final class Main {
     }
 
     private static boolean isHashName(String name) {
-        final int start = name.indexOf("(#");
+        final int start = name.indexOf(START_HASH);
         if (0 <= start) {
-            int i = start;
-            do {
+            int i = start + START_HASH.length();
+            while (DIGITS.indexOf(name.charAt(i)) >= 0) {
                 i += 1;
-            } while ("0123456789abcdefghijklmnopqrstuvwxyz".indexOf(name.charAt(i)) >= 0);
-            if (')' == name.charAt(i)) {
+            }
+            if (name.substring(i).startsWith(ENDOF_HASH)) {
                 return true;
             }
         }

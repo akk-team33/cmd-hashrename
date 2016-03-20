@@ -13,13 +13,13 @@ import java.util.logging.Logger;
 import static java.util.logging.Level.WARNING;
 import static org.junit.Assert.assertEquals;
 
-public class HashTest {
+public class HashTrial {
 
-    private static final Logger LOGGER = Logger.getLogger(HashTest.class.getCanonicalName());
+    private static final Logger LOGGER = Logger.getLogger(HashTrial.class.getCanonicalName());
 
     @Test
     public final void test() {
-        final List<String> list = hashes(Paths.get("/").toAbsolutePath().normalize());
+        final List<String> list = hashes(Paths.get("tmp/src").toAbsolutePath().normalize());
         final Set<String> set = new HashSet<>(list);
         assertEquals(list.size(), set.size());
     }

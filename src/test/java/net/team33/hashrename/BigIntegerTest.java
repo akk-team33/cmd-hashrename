@@ -36,7 +36,7 @@ public class BigIntegerTest {
                 new BigInteger(new byte[]{0, -1, -1}),
                 new BigInteger(1, new byte[]{-1, -1}));
         assertEquals(
-                BigInteger.ZERO.subtract(new BigInteger(new byte[]{1, 0, 1})),
+                BigInteger.ZERO.subtract(new BigInteger(new byte[]{1, 0, 0})),
                 new BigInteger(-1, new byte[]{1, 0, 0}));
     }
 }
