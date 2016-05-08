@@ -23,14 +23,17 @@ public final class Main {
 
     private static final String START_HASH = "[#";
     private static final String ENDOF_HASH = "]";
-    private static final Logger LOGGER = Logger.getLogger(Main.class.getCanonicalName());
+    private static final Logger LOGGER
+            = Logger.getLogger(Main.class.getCanonicalName());
     private static final ExecutorService EXECUTOR
             = Executors.newWorkStealingPool(4 + (4 * Runtime.getRuntime().availableProcessors()));
+    private static final Activity ACTIVITY
+            = new Activity();
 
     private Main() {
     }
 
-    public static void main(final String[] args) throws IOException {
+    public static void main(final String[] args) throws IOException, InterruptedException {
         rename(new AbstractList<Path>() {
             @Override
             public Path get(final int index) {
@@ -42,6 +45,7 @@ public final class Main {
                 return args.length;
             }
         });
+        ACTIVITY.join();
     }
 
     private static void rename(final Iterator<Path> iterator) {
@@ -54,7 +58,7 @@ public final class Main {
 
     private static void rename(final List<Path> paths) {
         for (final Path path : paths) {
-            EXECUTOR.execute(() -> rename(path));
+            EXECUTOR.execute(ACTIVITY.add(() -> rename(path)));
         }
     }
 
